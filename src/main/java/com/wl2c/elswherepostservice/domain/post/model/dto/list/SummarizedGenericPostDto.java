@@ -7,6 +7,7 @@ import com.wl2c.elswherepostservice.infra.s3.service.AWSObjectStorageService;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -21,6 +22,9 @@ public class SummarizedGenericPostDto {
     @Schema(description = "작성자", example = "익명")
     private final String author;
 
+    @Schema(description = "생성 시각")
+    private final LocalDateTime createdAt;
+
     @Schema(description = "본문", example = "게시글 본문")
     private final String body;
 
@@ -34,6 +38,7 @@ public class SummarizedGenericPostDto {
         this.id = post.getId();
         this.title = post.getTitle();
         this.author = nickname;
+        this.createdAt = post.getCreatedAt();
         this.body = slice(post.getBody(), bodySize);
         this.images = PostImageDto.listOf(s3service, post.getImages());
         this.files = PostFileDto.listOf(s3service, post.getFiles());
